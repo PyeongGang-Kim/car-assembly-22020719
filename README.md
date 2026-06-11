@@ -11,12 +11,18 @@
 ### 빌드 및 실행
 
 ```bash
-# 컴파일
-javac java/Assemble.java -d out/
+# 테스트 포함 빌드
+./gradlew build
 
-# 실행
-java -cp out Assemble
+# 테스트만 실행
+./gradlew test
+
+# 직접 실행
+./gradlew compileJava
+java -cp build/classes/java/main Assemble
 ```
+
+> Windows에서는 `./gradlew` 대신 `gradlew.bat`을 사용합니다.
 
 ### 종료
 
@@ -60,11 +66,23 @@ java -cp out Assemble
 ## 프로젝트 구조
 
 ```
-assemblyCar-main/
-├── java/
-│   └── Assemble.java       # 메인 소스 파일
-└── out/
-    └── production/
-        └── assemblyCar-main/
-            └── Assemble.class  # 컴파일 결과물
+src/
+├── main/java/
+│   ├── Assemble.java          # main() — 흐름 제어
+│   ├── CarSpec.java           # 조립 상태 (선택된 부품 보유)
+│   ├── Validator.java         # 호환 규칙 검증
+│   ├── Menu.java              # 메뉴 출력 및 입력 범위 검증
+│   └── enums/
+│       ├── CarType.java
+│       ├── Engine.java
+│       ├── BrakeSystem.java
+│       └── SteeringSystem.java
+└── test/java/
+    └── ValidatorTest.java     # 호환 규칙 단위 테스트 (15개)
 ```
+
+## 확장 방법
+
+새 차량 타입이나 부품을 추가할 때는 해당 **enum에 항목만 추가**하면 됩니다.  
+메뉴 출력과 입력 범위 검증은 `enum.values()`를 순회하므로 자동 반영됩니다.  
+호환 규칙 추가 시에는 `Validator.getFailReason()`에 조건을 추가합니다.

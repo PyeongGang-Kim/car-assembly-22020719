@@ -2,23 +2,35 @@
 
 ## 프로젝트 개요
 
-자동차 부품 조립 시뮬레이터. 단일 Java 파일(`java/Assemble.java`)로 구성된 콘솔 애플리케이션.
+자동차 부품 조립 시뮬레이터. Gradle + JUnit 5 기반 Java 콘솔 애플리케이션.
 
 ## 빌드 및 실행
 
 ```bash
-javac java/Assemble.java -d out/
-java -cp out Assemble
+gradlew.bat test          # 테스트 실행
+gradlew.bat compileJava   # 컴파일
+java -cp build/classes/java/main Assemble  # 실행
 ```
 
 ## 코드 구조
 
-- **진입점**: `main()` — `while(true)` 루프로 단계(step) 변수를 이동하며 메뉴를 순환
-- **상태 저장**: `stack[5]` 정수 배열 — 각 인덱스가 단계(CarType=0, Engine=1, Brake=2, Steering=3)에 대응
-- **단계 흐름**: `CarType_Q → Engine_Q → BrakeSystem_Q → SteeringSystem_Q → Run_Test`
-- **유효성 검증**: `isValidCheck()` / `testProducedCar()` — 동일한 호환 규칙을 각각 boolean 반환과 메시지 출력으로 중복 구현
+| 클래스 | 역할 |
+|--------|------|
+| `Assemble` | `main()` — 단계(step) 변수로 흐름 제어, 부품 선택 시 `CarSpec` 갱신 |
+| `CarSpec` | 조립 상태 보유 — `CarType`, `Engine`, `BrakeSystem`, `SteeringSystem` 필드 |
+| `Validator` | 호환 규칙 단일 관리 — `isValid(CarSpec)` / `getFailReason(CarSpec)` |
+| `Menu` | 메뉴 출력 + 입력 범위 검증 — `enum.values()` 순회로 동적 생성 |
+| `enums/*` | `CarType`, `Engine`, `BrakeSystem`, `SteeringSystem` — `code`, `displayName` 보유 |
 
-## 호환 규칙 (isValidCheck / testProducedCar)
+## 단계 흐름
+
+```
+CAR_TYPE → ENGINE → BRAKE → STEERING → RUN_TEST
+```
+- `0` 입력 시 이전 단계로 이동 (`CAR_TYPE` 단계 제외)
+- `RUN_TEST`에서 `0` 입력 시 `CAR_TYPE`으로 초기화
+
+## 호환 규칙 (Validator)
 
 **차량 타입별 제약**
 
@@ -35,19 +47,13 @@ java -cp out Assemble
 |------|------|
 | BOSCH 제동장치 | BOSCH 조향장치만 함께 사용 가능 |
 
-## 리팩토링 계획
+## 확장 가이드
 
-자세한 내용은 `PLAN.md` 참조. 작업 순서 요약:
-
-1. **JUnit 5 테스트 환경 구축** — 현재 호환 규칙 전체 케이스를 기준선으로 확보 (최우선)
-2. **enum 도입** — 매직 넘버 → `CarType`, `Engine`, `BrakeSystem`, `SteeringSystem`
-3. **`CarSpec` 클래스** — `int[] stack` 전역 배열 대체
-4. **`Validator` 클래스** — `isValidCheck()` / `testProducedCar()` 중복 규칙 통합
-5. **`Menu` 클래스** — UI 출력 분리, `main()`은 흐름 제어만 담당
+- **새 차량 타입/부품 추가**: 해당 enum에 `(code, displayName)` 항목 추가 → 메뉴·범위 검증 자동 반영
+- **호환 규칙 추가**: `Validator.getFailReason()`에 조건과 메시지 추가
+- **규칙 변경 후**: `ValidatorTest` 실행으로 회귀 확인
 
 ## 주의 사항
 
-- `isValidCheck()`와 `testProducedCar()`는 같은 규칙을 두 번 구현하고 있음 — 규칙 변경 시 두 메서드를 모두 수정해야 함
-- `stack` 배열은 static 전역 변수이므로 처음 화면으로 돌아가도 이전 선택 값이 유지됨 (새 선택으로 덮어쓰여짐)
-- 엔진 옵션 4번(고장난 엔진)은 `isValidCheck()`에서 검사하지 않고 `runProducedCar()`에서 별도 처리
+- `Engine.BROKEN`은 `Validator`를 통과하고 `runProducedCar()`에서 별도 처리됨
 - ANSI 이스케이프 코드(`\033[H\033[2J`)로 화면을 지우므로 Windows 구버전 콘솔에서 동작하지 않을 수 있음
