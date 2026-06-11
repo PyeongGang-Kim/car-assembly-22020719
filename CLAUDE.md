@@ -35,6 +35,16 @@ java -cp out Assemble
 |------|------|
 | BOSCH 제동장치 | BOSCH 조향장치만 함께 사용 가능 |
 
+## 리팩토링 계획
+
+자세한 내용은 `PLAN.md` 참조. 작업 순서 요약:
+
+1. **JUnit 5 테스트 환경 구축** — 현재 호환 규칙 전체 케이스를 기준선으로 확보 (최우선)
+2. **enum 도입** — 매직 넘버 → `CarType`, `Engine`, `BrakeSystem`, `SteeringSystem`
+3. **`CarSpec` 클래스** — `int[] stack` 전역 배열 대체
+4. **`Validator` 클래스** — `isValidCheck()` / `testProducedCar()` 중복 규칙 통합
+5. **`Menu` 클래스** — UI 출력 분리, `main()`은 흐름 제어만 담당
+
 ## 주의 사항
 
 - `isValidCheck()`와 `testProducedCar()`는 같은 규칙을 두 번 구현하고 있음 — 규칙 변경 시 두 메서드를 모두 수정해야 함
