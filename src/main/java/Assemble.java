@@ -12,7 +12,7 @@ public class Assemble {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int step = Menu.CAR_TYPE;
+        Step step = Step.CAR_TYPE;
 
         while (true) {
             System.out.print(CLEAR_SCREEN);
@@ -42,37 +42,37 @@ public class Assemble {
             }
 
             if (answer == 0) {
-                if (step == Menu.RUN_TEST) {
+                if (step == Step.RUN_TEST) {
                     spec = new CarSpec();
-                    step = Menu.CAR_TYPE;
-                } else if (step > Menu.CAR_TYPE) {
-                    step--;
+                    step = Step.CAR_TYPE;
+                } else if (step != Step.CAR_TYPE) {
+                    step = step.previous();
                 }
                 continue;
             }
 
             switch (step) {
-                case Menu.CAR_TYPE:
+                case CAR_TYPE:
                     selectCarType(answer);
                     delay(800);
-                    step = Menu.ENGINE;
+                    step = Step.ENGINE;
                     break;
-                case Menu.ENGINE:
+                case ENGINE:
                     selectEngine(answer);
                     delay(800);
-                    step = Menu.BRAKE;
+                    step = Step.BRAKE;
                     break;
-                case Menu.BRAKE:
+                case BRAKE:
                     selectBrakeSystem(answer);
                     delay(800);
-                    step = Menu.STEERING;
+                    step = Step.STEERING;
                     break;
-                case Menu.STEERING:
+                case STEERING:
                     selectSteeringSystem(answer);
                     delay(800);
-                    step = Menu.RUN_TEST;
+                    step = Step.RUN_TEST;
                     break;
-                case Menu.RUN_TEST:
+                case RUN_TEST:
                     if (answer == 1) {
                         runProducedCar();
                         delay(2000);
