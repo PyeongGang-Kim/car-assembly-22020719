@@ -1,6 +1,8 @@
 # IntelliJ IDEA
 .idea/
 *.iml
+*.ipr
+*.iws
 
 # 컴파일 결과물
 out/
