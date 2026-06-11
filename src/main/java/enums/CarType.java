@@ -1,14 +1,16 @@
 package enums;
 
 public enum CarType {
-    SEDAN(1),
-    SUV(2),
-    TRUCK(3);
+    SEDAN(1, "Sedan"),
+    SUV(2, "SUV"),
+    TRUCK(3, "Truck");
 
     public final int code;
+    public final String displayName;
 
-    CarType(int code) {
+    CarType(int code, String displayName) {
         this.code = code;
+        this.displayName = displayName;
     }
 
     public static CarType fromCode(int code) {

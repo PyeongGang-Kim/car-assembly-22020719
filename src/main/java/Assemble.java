@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Assemble {
     private static final String CLEAR_SCREEN = "\033[H\033[2J";
 
-    static CarSpec spec = new CarSpec();
+    private static CarSpec spec = new CarSpec();
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -90,20 +90,19 @@ public class Assemble {
 
     private static void selectCarType(int a) {
         spec.carType = CarType.fromCode(a);
-        System.out.printf("차량 타입으로 %s을 선택하셨습니다.\n", spec.carType.name());
+        System.out.printf("차량 타입으로 %s을 선택하셨습니다.%n", spec.carType.displayName);
     }
     private static void selectEngine(int a) {
         spec.engine = Engine.fromCode(a);
-        String name = spec.engine == Engine.BROKEN ? "고장난 엔진" : spec.engine.name();
-        System.out.printf("%s 엔진을 선택하셨습니다.\n", name);
+        System.out.printf("%s 엔진을 선택하셨습니다.%n", spec.engine.displayName);
     }
     private static void selectBrakeSystem(int a) {
         spec.brake = BrakeSystem.fromCode(a);
-        System.out.printf("%s 제동장치를 선택하셨습니다.\n", spec.brake.name());
+        System.out.printf("%s 제동장치를 선택하셨습니다.%n", spec.brake.displayName);
     }
     private static void selectSteeringSystem(int a) {
         spec.steering = SteeringSystem.fromCode(a);
-        System.out.printf("%s 조향장치를 선택하셨습니다.\n", spec.steering.name());
+        System.out.printf("%s 조향장치를 선택하셨습니다.%n", spec.steering.displayName);
     }
 
     private static void runProducedCar() {
@@ -116,10 +115,10 @@ public class Assemble {
             System.out.println("자동차가 움직이지 않습니다.");
             return;
         }
-        System.out.printf("Car Type : %s\n", spec.carType.name());
-        System.out.printf("Engine   : %s\n", spec.engine.name());
-        System.out.printf("Brake    : %s\n", spec.brake.name());
-        System.out.printf("Steering : %s\n", spec.steering.name());
+        System.out.printf("Car Type : %s%n", spec.carType.displayName);
+        System.out.printf("Engine   : %s%n", spec.engine.displayName);
+        System.out.printf("Brake    : %s%n", spec.brake.displayName);
+        System.out.printf("Steering : %s%n", spec.steering.displayName);
         System.out.println("자동차가 동작됩니다.");
     }
 

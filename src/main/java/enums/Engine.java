@@ -1,15 +1,17 @@
 package enums;
 
 public enum Engine {
-    GM(1),
-    TOYOTA(2),
-    WIA(3),
-    BROKEN(4);
+    GM(1, "GM"),
+    TOYOTA(2, "TOYOTA"),
+    WIA(3, "WIA"),
+    BROKEN(4, "고장난 엔진");
 
     public final int code;
+    public final String displayName;
 
-    Engine(int code) {
+    Engine(int code, String displayName) {
         this.code = code;
+        this.displayName = displayName;
     }
 
     public static Engine fromCode(int code) {

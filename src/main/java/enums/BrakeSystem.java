@@ -1,14 +1,16 @@
 package enums;
 
 public enum BrakeSystem {
-    MANDO(1),
-    CONTINENTAL(2),
-    BOSCH(3);
+    MANDO(1, "MANDO"),
+    CONTINENTAL(2, "CONTINENTAL"),
+    BOSCH(3, "BOSCH");
 
     public final int code;
+    public final String displayName;
 
-    BrakeSystem(int code) {
+    BrakeSystem(int code, String displayName) {
         this.code = code;
+        this.displayName = displayName;
     }
 
     public static BrakeSystem fromCode(int code) {

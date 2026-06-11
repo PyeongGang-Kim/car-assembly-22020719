@@ -1,3 +1,8 @@
+import enums.BrakeSystem;
+import enums.CarType;
+import enums.Engine;
+import enums.SteeringSystem;
+
 public class Menu {
 
     static final int CAR_TYPE  = 0;
@@ -19,26 +24,26 @@ public class Menu {
     static boolean isValidRange(int step, int ans) {
         switch (step) {
             case CAR_TYPE:
-                if (ans < 1 || ans > 3) {
-                    System.out.println("ERROR :: 차량 타입은 1 ~ 3 범위만 선택 가능");
+                if (ans < 1 || ans > CarType.values().length) {
+                    System.out.printf("ERROR :: 차량 타입은 1 ~ %d 범위만 선택 가능%n", CarType.values().length);
                     return false;
                 }
                 break;
             case ENGINE:
-                if (ans < 0 || ans > 4) {
-                    System.out.println("ERROR :: 엔진은 1 ~ 4 범위만 선택 가능");
+                if (ans < 0 || ans > Engine.values().length) {
+                    System.out.printf("ERROR :: 엔진은 1 ~ %d 범위만 선택 가능%n", Engine.values().length);
                     return false;
                 }
                 break;
             case BRAKE:
-                if (ans < 0 || ans > 3) {
-                    System.out.println("ERROR :: 제동장치는 1 ~ 3 범위만 선택 가능");
+                if (ans < 0 || ans > BrakeSystem.values().length) {
+                    System.out.printf("ERROR :: 제동장치는 1 ~ %d 범위만 선택 가능%n", BrakeSystem.values().length);
                     return false;
                 }
                 break;
             case STEERING:
-                if (ans < 0 || ans > 2) {
-                    System.out.println("ERROR :: 조향장치는 1 ~ 2 범위만 선택 가능");
+                if (ans < 0 || ans > SteeringSystem.values().length) {
+                    System.out.printf("ERROR :: 조향장치는 1 ~ %d 범위만 선택 가능%n", SteeringSystem.values().length);
                     return false;
                 }
                 break;
@@ -60,36 +65,36 @@ public class Menu {
         System.out.println(" '-(@)----------------(@)--'");
         System.out.println("===============================");
         System.out.println("어떤 차량 타입을 선택할까요?");
-        System.out.println("1. Sedan");
-        System.out.println("2. SUV");
-        System.out.println("3. Truck");
+        for (CarType t : CarType.values()) {
+            System.out.printf("%d. %s%n", t.code, t.displayName);
+        }
         System.out.println("===============================");
     }
 
     private static void showEngine() {
         System.out.println("어떤 엔진을 탑재할까요?");
         System.out.println("0. 뒤로가기");
-        System.out.println("1. GM");
-        System.out.println("2. TOYOTA");
-        System.out.println("3. WIA");
-        System.out.println("4. 고장난 엔진");
+        for (Engine e : Engine.values()) {
+            System.out.printf("%d. %s%n", e.code, e.displayName);
+        }
         System.out.println("===============================");
     }
 
     private static void showBrake() {
         System.out.println("어떤 제동장치를 선택할까요?");
         System.out.println("0. 뒤로가기");
-        System.out.println("1. MANDO");
-        System.out.println("2. CONTINENTAL");
-        System.out.println("3. BOSCH");
+        for (BrakeSystem b : BrakeSystem.values()) {
+            System.out.printf("%d. %s%n", b.code, b.displayName);
+        }
         System.out.println("===============================");
     }
 
     private static void showSteering() {
         System.out.println("어떤 조향장치를 선택할까요?");
         System.out.println("0. 뒤로가기");
-        System.out.println("1. BOSCH");
-        System.out.println("2. MOBIS");
+        for (SteeringSystem s : SteeringSystem.values()) {
+            System.out.printf("%d. %s%n", s.code, s.displayName);
+        }
         System.out.println("===============================");
     }
 
