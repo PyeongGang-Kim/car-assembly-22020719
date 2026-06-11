@@ -38,6 +38,7 @@ java -cp build/classes/java/main Assemble
 | 4 | 조향장치 | BOSCH, MOBIS |
 
 - 각 단계에서 `0`을 입력하면 이전 단계로 돌아갑니다 (차량 타입 선택 단계 제외).
+- 완성 화면에서 `0`을 입력하면 처음으로 돌아가며 조립 내용이 초기화됩니다.
 
 ## 부품 호환 규칙
 
@@ -57,10 +58,11 @@ java -cp build/classes/java/main Assemble
 | 부품 | 조건 |
 |------|------|
 | BOSCH 제동장치 | BOSCH 조향장치만 함께 사용 가능 |
+| 고장난 엔진 | 모든 차량 타입에서 사용 불가 |
 
 ## 완성 후 동작
 
-- **RUN**: 부품 조합이 유효하면 차량 사양을 출력하며 동작. 고장난 엔진 선택 시 별도 메시지 출력.
+- **RUN**: 부품 조합이 유효하면 차량 사양을 출력하며 동작.
 - **Test**: 부품 조합의 유효성을 검증하여 `PASS` 또는 `FAIL` 결과와 실패 사유를 출력.
 
 ## 프로젝트 구조
@@ -70,6 +72,7 @@ src/
 ├── main/java/
 │   ├── Assemble.java          # main() — 흐름 제어
 │   ├── CarSpec.java           # 조립 상태 (선택된 부품 보유)
+│   ├── Step.java              # 조립 단계 enum (CAR_TYPE → RUN_TEST)
 │   ├── Validator.java         # 호환 규칙 검증
 │   ├── Menu.java              # 메뉴 출력 및 입력 범위 검증
 │   └── enums/
@@ -78,11 +81,12 @@ src/
 │       ├── BrakeSystem.java
 │       └── SteeringSystem.java
 └── test/java/
-    └── ValidatorTest.java     # 호환 규칙 단위 테스트 (15개)
+    └── ValidatorTest.java     # 호환 규칙 단위 테스트 (16개)
 ```
 
 ## 확장 방법
 
 새 차량 타입이나 부품을 추가할 때는 해당 **enum에 항목만 추가**하면 됩니다.  
 메뉴 출력과 입력 범위 검증은 `enum.values()`를 순회하므로 자동 반영됩니다.  
-호환 규칙 추가 시에는 `Validator.getFailReason()`에 조건을 추가합니다.
+호환 규칙 추가 시에는 `Validator.getFailReason()`에 조건을 추가합니다.  
+새 조립 단계가 필요하다면 `Step` enum에 항목을 추가하고 `Menu`, `Assemble`에 해당 case를 추가합니다.
