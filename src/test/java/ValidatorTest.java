@@ -107,8 +107,16 @@ class ValidatorTest {
     // ── 고장난 엔진 ─────────────────────────────────────────────
 
     @Test
-    @DisplayName("고장난 엔진은 Validator 통과 (runProducedCar에서 별도 처리)")
-    void broken_engine_passes_validator() {
-        assertTrue(Validator.isValid(spec(CarType.SEDAN, Engine.BROKEN, BrakeSystem.MANDO, SteeringSystem.BOSCH)));
+    @DisplayName("고장난 엔진 → Validator FAIL")
+    void broken_engine_fails_validator() {
+        assertFalse(Validator.isValid(spec(CarType.SEDAN, Engine.BROKEN, BrakeSystem.MANDO, SteeringSystem.BOSCH)));
+    }
+
+    @Test
+    @DisplayName("고장난 엔진 → 실패 사유 메시지 포함")
+    void broken_engine_fail_reason() {
+        String reason = Validator.getFailReason(spec(CarType.SEDAN, Engine.BROKEN, BrakeSystem.MANDO, SteeringSystem.BOSCH));
+        assertNotNull(reason);
+        assertTrue(reason.contains("고장난 엔진"));
     }
 }

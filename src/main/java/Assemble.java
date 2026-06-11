@@ -43,6 +43,7 @@ public class Assemble {
 
             if (answer == 0) {
                 if (step == Menu.RUN_TEST) {
+                    spec = new CarSpec();
                     step = Menu.CAR_TYPE;
                 } else if (step > Menu.CAR_TYPE) {
                     step--;
@@ -108,11 +109,6 @@ public class Assemble {
     private static void runProducedCar() {
         if (!Validator.isValid(spec)) {
             System.out.println("자동차가 동작되지 않습니다");
-            return;
-        }
-        if (spec.engine == Engine.BROKEN) {
-            System.out.println("엔진이 고장나있습니다.");
-            System.out.println("자동차가 움직이지 않습니다.");
             return;
         }
         System.out.printf("Car Type : %s%n", spec.carType.displayName);

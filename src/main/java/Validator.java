@@ -10,6 +10,8 @@ public class Validator {
     }
 
     public static String getFailReason(CarSpec spec) {
+        if (spec.engine == Engine.BROKEN)
+            return "고장난 엔진은 사용 불가";
         if (spec.carType == CarType.SEDAN && spec.brake == BrakeSystem.CONTINENTAL)
             return "Sedan에는 Continental제동장치 사용 불가";
         if (spec.carType == CarType.SUV && spec.engine == Engine.TOYOTA)
