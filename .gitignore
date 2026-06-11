@@ -5,3 +5,7 @@
 # 컴파일 결과물
 out/
 *.class
+
+# Gradle
+.gradle/
+build/
